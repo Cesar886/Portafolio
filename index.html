@@ -241,6 +241,8 @@ a{color:inherit;text-decoration:none}
 .proj-cat-label:first-of-type{margin-top:0}
 .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1px}
 .proj-grid.col1{grid-template-columns:1fr}
+.proj-grid.web-projects{gap:1rem;background:transparent;border:none;overflow:visible}
+.proj-grid.web-projects .proj-card{border:1px solid var(--border);border-radius:10px}
 .proj-card{
   background:var(--surface);padding:1.75rem;
   position:relative;transition:background .2s;
@@ -455,7 +457,7 @@ a{color:inherit;text-decoration:none}
           <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
         <h3 class="pq-title">Proyectos reales en producción</h3>
-        <p class="pq-text">ManhwaImperial.site y UMatch.site tienen dominio propio, usuarios reales y tráfico activo — no son demos de portafolio. Sé lo que implica lanzar y mantener un producto.</p>
+        <p class="pq-text">ManhwaImperial.site y restaurant.fonda-el-limoncito.site tienen dominio propio, usuarios reales y tráfico activo — no son demos de portafolio. Sé lo que implica lanzar y mantener un producto.</p>
       </div>
       <div class="pq-card fade d2">
         <div class="pq-icon">
@@ -490,7 +492,22 @@ a{color:inherit;text-decoration:none}
     <p class="sec-sub fade d2">Cada proyecto resuelve un problema real. Aquí el trabajo habla por sí mismo.</p>
 
     <p class="proj-cat-label fade">Plataformas Web — Producción activa</p>
-    <div class="proj-grid fade d1">
+    <div class="proj-grid col1 web-projects fade d1">
+      <div class="proj-card">
+        <div class="proj-card-top">
+          <p class="proj-tag">Restaurante · Web comercial</p>
+          <span class="proj-live">Live</span>
+        </div>
+        <h3 class="proj-name">Fonda El Limoncito</h3>
+        <p class="proj-desc">Sitio web para restaurante familiar en Barrio Antiguo, Monterrey. Presenta historia, menú, ambiente, horarios, reseñas de Google y TripAdvisor, contacto directo y llamadas a la acción para visitar o llamar al restaurante.</p>
+        <div class="proj-stack">
+          <span class="proj-tech">HTML</span><span class="proj-tech">CSS</span><span class="proj-tech">Responsive</span><span class="proj-tech">SEO local</span>
+        </div>
+        <a href="https://restaurant.fonda-el-limoncito.site/" target="_blank" rel="noopener" class="proj-link">
+          Visitar sitio
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
       <div class="proj-card">
         <div class="proj-card-top">
           <p class="proj-tag">Entretenimiento · Full Stack</p>
@@ -502,21 +519,6 @@ a{color:inherit;text-decoration:none}
           <span class="proj-tech">Next.js</span><span class="proj-tech">App Router</span><span class="proj-tech">PostgreSQL</span><span class="proj-tech">Auth</span>
         </div>
         <a href="https://manhwaimperial.site" target="_blank" rel="noopener" class="proj-link">
-          Visitar sitio
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </a>
-      </div>
-      <div class="proj-card">
-        <div class="proj-card-top">
-          <p class="proj-tag">Red Social · Universitario</p>
-          <span class="proj-live">Live</span>
-        </div>
-        <h3 class="proj-name">UMatch — UniConnect</h3>
-        <p class="proj-desc">Red de matchmaking universitario que conecta estudiantes por intereses, carrera y actividades. Sistema de recomendaciones algorítmico, perfiles, chats en tiempo real y geolocalización universitaria.</p>
-        <div class="proj-stack">
-          <span class="proj-tech">Next.js</span><span class="proj-tech">PostgreSQL</span><span class="proj-tech">Matching Alg.</span><span class="proj-tech">Realtime</span>
-        </div>
-        <a href="https://umatch.site" target="_blank" rel="noopener" class="proj-link">
           Visitar sitio
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
@@ -544,6 +546,10 @@ a{color:inherit;text-decoration:none}
         <div class="proj-stack">
           <span class="proj-tech">Next.js</span><span class="proj-tech">PostgreSQL</span><span class="proj-tech">Roles</span><span class="proj-tech">Analytics</span>
         </div>
+        <a href="https://desarrollo-software.site/" target="_blank" rel="noopener" class="proj-link">
+          Visitar sitio
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
       </div>
     </div>
 
@@ -564,10 +570,10 @@ a{color:inherit;text-decoration:none}
     <p class="proj-cat-label fade">Proyectos Académicos / Experimentales</p>
     <div class="proj-grid fade d4">
       <div class="proj-card">
-        <p class="proj-tag">Data Science · IA</p>
-        <h3 class="proj-name">ModeloCerveza — Fuzzy Logic</h3>
-        <p class="proj-desc">Clasificador con lógica difusa en Python. Implementación de conjuntos borrosos y reglas de inferencia para clasificación multivariable.</p>
-        <div class="proj-stack"><span class="proj-tech">Python</span><span class="proj-tech">Fuzzy Logic</span><span class="proj-tech">Google Colab</span></div>
+        <p class="proj-tag">IA · Fintech · Validación</p>
+        <h3 class="proj-name">Modelo IA — One Card</h3>
+        <p class="proj-desc">Modelo de inteligencia artificial entrenado para One Card, empresa de previsión social y control de gasto empresarial. El modelo realiza matching y validación de transferencias y compras en tarjetas de despensa, combustible y premios — reduciendo fraudes y automatizando la comprobación de gastos.</p>
+        <div class="proj-stack"><span class="proj-tech">Python</span><span class="proj-tech">Fuzzy Logic</span><span class="proj-tech">ML</span><span class="proj-tech">Google Colab</span></div>
       </div>
       <div class="proj-card">
         <p class="proj-tag">Compiladores · Teoría</p>
