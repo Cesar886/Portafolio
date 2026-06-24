@@ -64,6 +64,29 @@ a{color:inherit;text-decoration:none}
 .nav-cta:hover{background:var(--purple-b);transform:translateY(-1px)}
 .ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
 .ham span{display:block;width:20px;height:1.5px;background:var(--soft);border-radius:2px;transition:.3s}
+.ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* ── MOBILE MENU ── */
+#mobile-menu{
+  display:none;position:fixed;inset:0;z-index:99;
+  background:rgba(7,7,15,.97);backdrop-filter:blur(16px);
+  flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+  opacity:0;transition:opacity .3s;
+}
+#mobile-menu.open{display:flex;opacity:1}
+#mobile-menu a{
+  font-size:1.35rem;font-weight:600;color:var(--soft);
+  letter-spacing:.06em;transition:color .2s;
+}
+#mobile-menu a:hover{color:var(--white)}
+#mobile-menu .m-cta{
+  margin-top:.5rem;padding:.8rem 2.5rem;
+  background:var(--purple);color:#fff;border-radius:6px;
+  font-size:1rem;font-weight:700;
+}
+#mobile-menu .m-cta:hover{background:var(--purple-b)}
 
 /* ── HERO ── */
 #hero{
@@ -364,6 +387,15 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu">
+  <a href="#porque"   onclick="closeMenu()">Servicios</a>
+  <a href="#proyectos" onclick="closeMenu()">Proyectos</a>
+  <a href="#stack"    onclick="closeMenu()">Stack</a>
+  <a href="#contacto" onclick="closeMenu()">Contacto</a>
+  <a href="#contacto" class="m-cta" onclick="closeMenu()">Trabajemos juntos</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -701,6 +733,20 @@ const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
+
+/* Mobile menu */
+const ham = document.querySelector('.ham');
+const mobileMenu = document.getElementById('mobile-menu');
+ham.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.toggle('open');
+  ham.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
+function closeMenu() {
+  mobileMenu.classList.remove('open');
+  ham.classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 /* Fade in */
 const observer = new IntersectionObserver(entries => {
