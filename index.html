@@ -50,7 +50,7 @@ a{color:inherit;text-decoration:none}
   --green:    #34d399;
 }
 
-.container{max-width:920px;margin:0 auto;padding:0 1.75rem}
+.container{margin:0 auto;padding:0 clamp(2rem,6vw,5rem)}
 
 /* ── NAV ── */
 #nav{
@@ -110,35 +110,20 @@ a{color:inherit;text-decoration:none}
 /* ── HERO ── */
 #hero{
   min-height:100vh;display:flex;align-items:center;
-  padding:8rem 0 5rem;position:relative;overflow:hidden;
-}
-.hero-glow{
-  position:absolute;top:-10%;left:50%;transform:translateX(-50%);
-  width:800px;height:800px;border-radius:50%;
-  background:radial-gradient(circle,rgba(168,85,247,.07) 0%,transparent 65%);
-  pointer-events:none;
-}
-.hero-grid-bg{
-  position:absolute;inset:0;pointer-events:none;
-  background-image:
-    linear-gradient(var(--border) 1px,transparent 1px),
-    linear-gradient(90deg,var(--border) 1px,transparent 1px);
-  background-size:60px 60px;opacity:.3;
-  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 0%,transparent 100%);
+  padding:8rem 0 5rem;
 }
 .hero-chip{
   display:inline-flex;align-items:center;gap:.5rem;
   font-family:'JetBrains Mono',monospace;font-size:.72rem;
   color:var(--green);letter-spacing:.15em;text-transform:uppercase;
-  padding:.35rem .85rem;border:1px solid rgba(52,211,153,.2);border-radius:100px;
-  background:rgba(52,211,153,.06);margin-bottom:2rem;
+  margin-bottom:2rem;
 }
 .hero-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .hero-h1{
-  font-size:clamp(2.8rem,7.5vw,5.5rem);font-weight:900;
+  font-size:clamp(2.8rem,8vw,6.5rem);font-weight:900;
   color:var(--white);line-height:1.02;letter-spacing:-.04em;
-  margin-bottom:1.25rem;
+  margin-bottom:1.5rem;
 }
 .hero-h1 .accent{
   background:linear-gradient(135deg,var(--purple) 0%,#c084fc 100%);
@@ -146,7 +131,7 @@ a{color:inherit;text-decoration:none}
 }
 .hero-sub{
   font-size:clamp(1rem,2vw,1.2rem);font-weight:400;
-  color:var(--soft);max-width:580px;line-height:1.75;margin-bottom:2.75rem;
+  color:var(--soft);max-width:600px;line-height:1.85;margin-bottom:3.25rem;
 }
 .hero-sub strong{color:var(--white);font-weight:500}
 .hero-actions{display:flex;flex-wrap:wrap;gap:.85rem;margin-bottom:3.5rem}
@@ -155,10 +140,9 @@ a{color:inherit;text-decoration:none}
   font-size:.85rem;font-weight:600;letter-spacing:.04em;
   padding:.75rem 1.75rem;border-radius:6px;
   background:var(--purple);color:#fff;
-  box-shadow:0 0 30px var(--purple-glow);
-  transition:background .2s,transform .2s,box-shadow .2s;
+  transition:background .2s,transform .2s;
 }
-.btn-primary:hover{background:var(--purple-b);transform:translateY(-2px);box-shadow:0 0 40px rgba(168,85,247,.35)}
+.btn-primary:hover{background:var(--purple-b);transform:translateY(-2px)}
 .btn-secondary{
   display:inline-flex;align-items:center;gap:.5rem;
   font-size:.85rem;font-weight:500;
@@ -175,23 +159,28 @@ a{color:inherit;text-decoration:none}
   transition:background .2s,transform .2s;
 }
 .btn-wa:hover{background:#1ebe5d;transform:translateY(-2px)}
+.hero-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:5rem;width:100%;
+}
+.hero-text{flex:1;min-width:0}
+.hero-aside{flex:0 0 360px}
 .hero-stats{
-  display:flex;flex-wrap:wrap;gap:0;
-  border:1px solid var(--border);border-radius:10px;
-  background:var(--surface);overflow:hidden;
-  max-width:560px;
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  border:1px solid var(--border);border-radius:12px;overflow:hidden;
 }
 .stat{
-  flex:1;min-width:130px;padding:1.25rem 1.5rem;
-  border-right:1px solid var(--border);
+  padding:1.75rem;
+  border-bottom:1px solid var(--border);
 }
-.stat:last-child{border-right:none}
+.stat:nth-child(odd){border-right:1px solid var(--border)}
+.stat:nth-child(3),.stat:nth-child(4){border-bottom:none}
 .stat-num{
-  font-size:1.75rem;font-weight:800;color:var(--white);
-  letter-spacing:-.03em;line-height:1;
+  font-size:2.2rem;font-weight:800;color:var(--white);
+  letter-spacing:-.04em;line-height:1;
 }
 .stat-num span{color:var(--purple)}
-.stat-label{font-size:.75rem;color:var(--muted);margin-top:.3rem}
+.stat-label{font-size:.73rem;color:var(--muted);margin-top:.4rem;line-height:1.4}
 
 /* ── SECTION BASE ── */
 .section{padding:5.5rem 0}
@@ -351,10 +340,9 @@ a{color:inherit;text-decoration:none}
   width:100%;padding:.8rem;
   background:var(--purple);color:#fff;border:none;border-radius:6px;
   font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;
-  cursor:pointer;transition:background .2s,transform .2s,box-shadow .2s;
-  box-shadow:0 0 20px var(--purple-glow);
+  cursor:pointer;transition:background .2s,transform .2s;
 }
-.btn-submit:hover{background:var(--purple-b);transform:translateY(-1px);box-shadow:0 0 30px rgba(168,85,247,.35)}
+.btn-submit:hover{background:var(--purple-b);transform:translateY(-1px)}
 
 /* ── FOOTER ── */
 #footer{
@@ -375,14 +363,28 @@ a{color:inherit;text-decoration:none}
 .d4{transition-delay:.28s}.d5{transition-delay:.35s}
 
 /* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero-inner{flex-direction:column;gap:3rem;align-items:flex-start}
+  .hero-aside{flex:none;width:100%}
+  .hero-stats{grid-template-columns:1fr 1fr 1fr 1fr;border-radius:10px}
+  .stat:nth-child(odd){border-right:1px solid var(--border)}
+  .stat:nth-child(3){border-right:1px solid var(--border)}
+  .stat:nth-child(1),.stat:nth-child(2),.stat:nth-child(3),.stat:nth-child(4){border-bottom:none}
+}
 @media(max-width:700px){
   .nav-links,.nav-cta{display:none}
   .ham{display:flex}
   .proj-grid,.pq-grid,.contact-wrap{grid-template-columns:1fr}
   .form-row{grid-template-columns:1fr}
-  .hero-stats{flex-direction:column}
-  .stat{border-right:none;border-bottom:1px solid var(--border)}
-  .stat:last-child{border-bottom:none}
+  .hero-inner{gap:2.5rem}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .stat{padding:1.25rem}
+  .stat:nth-child(odd){border-right:1px solid var(--border)}
+  .stat:nth-child(3),.stat:nth-child(4){border-bottom:none}
+  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border)}
+  .hero-actions{flex-direction:column}
+  .hero-actions a{width:100%;justify-content:center}
+  .hero-h1{font-size:clamp(2.4rem,10vw,3.5rem)}
 }
 @media(prefers-reduced-motion:reduce){
   .fade,*{transition-duration:.01ms!important}
@@ -456,43 +458,49 @@ a{color:inherit;text-decoration:none}
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-grid-bg"></div>
-  <div class="container" style="position:relative;z-index:1">
-    <div class="hero-chip fade">Disponible para proyectos de desarrollo web</div>
-    <h1 class="hero-h1 fade d1">
-      Desarrollo <span class="accent">páginas web</span><br>que convierten visitas en clientes
-    </h1>
-    <p class="hero-sub fade d2">
-      Soy <strong>Cesar Daniel Rodriguez</strong>, desarrollador web full stack freelance en México. Me especializo en <strong>páginas web profesionales</strong>, apps móviles y paneles de administración — con dominio real, usuarios reales y tráfico activo.
-    </p>
-    <div class="hero-actions fade d3">
-      <a href="#contacto" class="btn-primary">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Hablemos de tu proyecto
-      </a>
-      <a href="https://wa.me/528261308623" target="_blank" rel="noopener" class="btn-wa">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp directo
-      </a>
-      <a href="#proyectos" class="btn-secondary">Ver proyectos</a>
-    </div>
-    <div class="hero-stats fade d4">
-      <div class="stat">
-        <div class="stat-num">8<span>+</span></div>
-        <div class="stat-label">Proyectos entregados</div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-chip fade">Disponible para proyectos</div>
+        <h1 class="hero-h1 fade d1">
+          Convierto ideas en<br>
+          <span class="accent">software que funciona</span>
+        </h1>
+        <p class="hero-sub fade d2">
+          Soy <strong>Cesar Daniel Rodriguez</strong>, Software Engineer especializado en <strong>páginas web profesionales</strong>, apps móviles y paneles de administración.
+          Entrego productos reales — con dominio, usuarios y tráfico activo.
+        </p>
+        <div class="hero-actions fade d3">
+          <a href="#contacto" class="btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Hablemos de tu proyecto
+          </a>
+          <a href="https://wa.me/528261308623" target="_blank" rel="noopener" class="btn-wa">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp directo
+          </a>
+          <a href="#proyectos" class="btn-secondary">Ver proyectos</a>
+        </div>
       </div>
-      <div class="stat">
-        <div class="stat-num">2</div>
-        <div class="stat-label">Plataformas en producción</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">3<span>+</span></div>
-        <div class="stat-label">Años de experiencia</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">∞</div>
-        <div class="stat-label">Compromiso con el resultado</div>
+      <div class="hero-aside fade d4">
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-num">8<span>+</span></div>
+            <div class="stat-label">Proyectos entregados</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Plataformas en producción</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">3<span>+</span></div>
+            <div class="stat-label">Años de experiencia</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Compromiso con el resultado</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
