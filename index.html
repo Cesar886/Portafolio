@@ -28,8 +28,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:#07070f;color:#cbd5e1;line-height:1.6;overflow-x:hidden}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 a{color:inherit;text-decoration:none}
 
 :root{
@@ -48,9 +48,40 @@ a{color:inherit;text-decoration:none}
   --purple-dim: rgba(168,85,247,.1);
   --purple-glow: rgba(168,85,247,.2);
   --green:    #34d399;
+  --accent-2: #c084fc;
 }
 
-.container{margin:0 auto;padding:0 clamp(2rem,6vw,5rem)}
+/* ── TEMA CLARO ── */
+html[data-theme="light"]{
+  --bg:       #f7f7fb;
+  --bg2:      #ffffff;
+  --surface:  #ffffff;
+  --surface2: #f1f1f8;
+  --border:   #e4e4ee;
+  --border2:  #d4d4e2;
+  --muted:    #6a6a85;
+  --soft:     #4c4c66;
+  --text:     #3a3a52;
+  --white:    #14141f;
+  --purple:   #7c3aed;
+  --purple-b: #6d28d9;
+  --purple-dim: rgba(124,58,237,.08);
+  --purple-glow: rgba(124,58,237,.15);
+  --green:    #059669;
+  --accent-2: #9333ea;
+}
+html[data-theme="light"] body{background:var(--bg)}
+html[data-theme="light"] #nav.scrolled{background:rgba(255,255,255,.85);border-bottom:1px solid var(--border)}
+html[data-theme="light"] #mobile-menu{background:rgba(255,255,255,.97)}
+html[data-theme="light"] .proj-tech{background:rgba(0,0,0,.03)}
+html[data-theme="light"] .hero-h1 .accent{background:linear-gradient(135deg,var(--purple) 0%,var(--accent-2) 100%);-webkit-background-clip:text;background-clip:text}
+
+body,#nav,.proj-card,.contact-item,.badge,.stat,.pq-card{transition:background-color .3s,border-color .3s,color .3s}
+
+.container{margin:0 auto;padding:0 clamp(1.5rem,4vw,3.25rem)}
+/* Secciones bajo el hero: mucho más separadas de los bordes */
+.section .container,#footer .container{padding:0 clamp(1.5rem,9vw,8rem)}
+#porque .sec-sub,#proyectos .sec-sub{max-width:760px}
 
 /* ── NAV ── */
 #nav{
@@ -81,6 +112,28 @@ a{color:inherit;text-decoration:none}
   transition:background .2s,transform .2s;
 }
 .nav-cta:hover{background:var(--purple-b);transform:translateY(-1px)}
+.theme-toggle{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:7px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--soft);cursor:pointer;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.theme-toggle:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-dim)}
+.theme-toggle svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.theme-toggle .ico-sun{display:none}
+html[data-theme="light"] .theme-toggle .ico-sun{display:block}
+html[data-theme="light"] .theme-toggle .ico-moon{display:none}
+.lang-toggle{
+  display:flex;align-items:center;justify-content:center;
+  height:36px;padding:0 .7rem;border-radius:7px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--soft);cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:500;letter-spacing:.08em;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.lang-toggle:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-dim)}
+.nav-right{display:flex;align-items:center;gap:.6rem}
 .ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
 .ham span{display:block;width:20px;height:1.5px;background:var(--soft);border-radius:2px;transition:.3s}
 .ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
@@ -121,7 +174,7 @@ a{color:inherit;text-decoration:none}
 .hero-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .hero-h1{
-  font-size:clamp(2.8rem,8vw,6.5rem);font-weight:900;
+  font-size:clamp(2.8rem,6vw,4.8rem);font-weight:900;
   color:var(--white);line-height:1.02;letter-spacing:-.04em;
   margin-bottom:1.5rem;
 }
@@ -160,27 +213,69 @@ a{color:inherit;text-decoration:none}
 }
 .btn-wa:hover{background:#1ebe5d;transform:translateY(-2px)}
 .hero-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:5rem;width:100%;
+  display:grid;grid-template-columns:1fr minmax(320px,380px);
+  align-items:center;gap:clamp(2.5rem,5vw,5rem);width:100%;
 }
-.hero-text{flex:1;min-width:0}
-.hero-aside{flex:0 0 360px}
+.hero-text{min-width:0}
+/* ── FOTO ── */
+.hero-aside{position:relative}
+.hero-photo{
+  position:relative;border-radius:18px;overflow:hidden;z-index:1;
+  border:1px solid var(--border2);
+  box-shadow:0 30px 70px -35px rgba(0,0,0,.7),
+             0 0 0 1px rgba(255,255,255,.02) inset;
+}
+.hero-photo img{
+  display:block;width:100%;height:clamp(380px,46vw,460px);
+  object-fit:cover;object-position:center 18%;
+  filter:grayscale(100%) contrast(1.02);
+  transition:filter .5s ease,transform .5s ease;
+}
+.hero-photo:hover img{filter:grayscale(0%) contrast(1);transform:scale(1.02)}
+.hero-photo::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 45%,rgba(7,7,15,.9) 100%);
+}
+/* halo decorativo detrás de la foto */
+.hero-aside::before{
+  content:"";position:absolute;z-index:0;
+  width:78%;aspect-ratio:1;right:-12%;top:-10%;
+  background:radial-gradient(circle,var(--purple-glow),transparent 68%);
+  filter:blur(20px);pointer-events:none;
+}
+.hero-photo-tag{
+  position:absolute;left:1.15rem;bottom:1.1rem;z-index:2;
+  display:flex;align-items:center;gap:.65rem;
+}
+.hero-photo-tag .dot{
+  width:8px;height:8px;border-radius:50%;flex:none;
+  background:#34d399;box-shadow:0 0 8px #34d399;animation:pulse 2s infinite;
+}
+.hero-photo-tag .who{display:flex;flex-direction:column;line-height:1.25}
+.hero-photo-tag .who strong{
+  font-size:.95rem;font-weight:700;color:#fff;letter-spacing:-.01em;
+}
+.hero-photo-tag .who{
+  font-family:'JetBrains Mono',monospace;font-size:.66rem;
+  color:rgba(255,255,255,.6);letter-spacing:.06em;
+}
+/* ── ESTADÍSTICAS (tira horizontal) ── */
 .hero-stats{
-  display:grid;grid-template-columns:1fr 1fr;gap:0;
-  border:1px solid var(--border);border-radius:12px;overflow:hidden;
+  display:flex;flex-wrap:wrap;margin-top:3rem;
+  padding-top:2rem;border-top:1px solid var(--border);
 }
 .stat{
-  padding:1.75rem;
-  border-bottom:1px solid var(--border);
+  padding-right:clamp(1.5rem,3vw,2.25rem);
+  margin-right:clamp(1.5rem,3vw,2.25rem);
+  border-right:1px solid var(--border);
 }
-.stat:nth-child(odd){border-right:1px solid var(--border)}
-.stat:nth-child(3),.stat:nth-child(4){border-bottom:none}
+.stat:last-child{padding-right:0;margin-right:0;border-right:none}
 .stat-num{
-  font-size:2.2rem;font-weight:800;color:var(--white);
+  font-size:clamp(1.7rem,2.5vw,2.1rem);font-weight:800;color:var(--white);
   letter-spacing:-.04em;line-height:1;
 }
 .stat-num span{color:var(--purple)}
-.stat-label{font-size:.73rem;color:var(--muted);margin-top:.4rem;line-height:1.4}
+.stat-label{font-size:.72rem;color:var(--muted);margin-top:.45rem;line-height:1.4;max-width:11ch}
 
 /* ── SECTION BASE ── */
 .section{padding:5.5rem 0}
@@ -220,23 +315,65 @@ a{color:inherit;text-decoration:none}
 .pq-title{font-size:.97rem;font-weight:600;color:var(--white);margin-bottom:.45rem}
 .pq-text{font-size:.84rem;color:var(--muted);line-height:1.75}
 
+/* ── PROCESO ── */
+#proceso{background:var(--bg)}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+.process-step{
+  position:relative;padding:1.75rem 1.5rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  transition:border-color .25s,background .25s;
+}
+.process-step:hover{border-color:var(--border2);background:var(--surface2)}
+.step-num{
+  display:flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:9px;margin-bottom:1.1rem;
+  font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:600;
+  color:var(--purple);background:var(--purple-dim);border:1px solid rgba(168,85,247,.2);
+}
+.step-title{font-size:.95rem;font-weight:600;color:var(--white);margin-bottom:.45rem}
+.step-text{font-size:.82rem;color:var(--muted);line-height:1.7}
+
+/* ── CTA POR PROYECTO ── */
+.proj-cta{
+  display:inline-flex;align-items:center;gap:.4rem;
+  margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border);
+  font-size:.76rem;font-weight:500;color:var(--green);width:100%;
+  opacity:.85;transition:opacity .2s;
+}
+.proj-cta:hover{opacity:1}
+.proj-cta svg{width:13px;height:13px}
+
 /* ── STACK ── */
 #stack{background:var(--bg)}
-.stack-groups{display:flex;flex-direction:column;gap:1.5rem}
+.stack-groups{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  column-gap:clamp(2rem,6vw,5rem);row-gap:2.75rem;
+}
+.stack-groups>div{position:relative;padding-top:1.1rem}
+.stack-groups>div::before{
+  content:"";position:absolute;top:0;left:0;width:34px;height:2px;
+  background:linear-gradient(90deg,var(--purple),transparent);border-radius:2px;
+}
 .stack-group-label{
-  font-family:'JetBrains Mono',monospace;font-size:.65rem;
-  color:var(--muted);letter-spacing:.18em;text-transform:uppercase;
-  margin-bottom:.6rem;
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;
+  color:var(--soft);letter-spacing:.2em;text-transform:uppercase;
+  margin-bottom:1.1rem;
 }
-.badge-row{display:flex;flex-wrap:wrap;gap:.5rem}
+.badge-row{display:flex;flex-wrap:wrap;gap:.55rem}
 .badge{
-  font-family:'JetBrains Mono',monospace;font-size:.76rem;
-  padding:.32rem .8rem;border-radius:5px;
-  border:1px solid var(--border);color:var(--soft);background:var(--surface);
-  transition:border-color .2s,color .2s,background .2s;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;
+  padding:.42rem .9rem;border-radius:999px;
+  border:1px solid var(--border);color:var(--text);background:var(--surface);
+  transition:border-color .2s,color .2s,background .2s,transform .2s;
 }
-.badge:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-dim)}
-.badge.hi{border-color:rgba(168,85,247,.3);color:var(--purple);background:var(--purple-dim)}
+.badge:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-dim);transform:translateY(-2px)}
+.badge.hi{
+  border-color:var(--purple);color:var(--purple);
+  background:var(--purple-dim);font-weight:500;
+}
+@media(max-width:640px){
+  .stack-groups{grid-template-columns:1fr;row-gap:2.25rem}
+}
 
 /* ── PROYECTOS ── */
 #proyectos{background:var(--bg2);border-top:1px solid var(--border)}
@@ -281,6 +418,26 @@ a{color:inherit;text-decoration:none}
 }
 .proj-link:hover{opacity:1}
 .proj-link svg{width:11px;height:11px}
+.proj-result{
+  display:flex;align-items:flex-start;gap:.55rem;
+  font-size:.78rem;color:var(--soft);line-height:1.55;
+  padding:.65rem .85rem;margin-bottom:1rem;
+  background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:6px;
+}
+.proj-result svg{width:13px;height:13px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;margin-top:.18rem}
+.proj-result strong{color:var(--white);font-weight:600}
+
+/* ── CTA BANNER ── */
+.cta-banner{
+  margin-top:3.5rem;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+  padding:2.1rem 2.4rem;
+  background:linear-gradient(135deg,rgba(168,85,247,.1),rgba(124,58,237,.04));
+  border:1px solid var(--border2);border-radius:14px;
+}
+.cta-banner-text h3{font-size:clamp(1.05rem,2vw,1.3rem);font-weight:700;color:var(--white);margin-bottom:.35rem;letter-spacing:-.02em}
+.cta-banner-text p{font-size:.86rem;color:var(--muted);line-height:1.6}
+.cta-banner .btn-wa{flex-shrink:0}
 
 /* ── CONTACTO ── */
 #contacto{
@@ -343,6 +500,17 @@ a{color:inherit;text-decoration:none}
   cursor:pointer;transition:background .2s,transform .2s;
 }
 .btn-submit:hover{background:var(--purple-b);transform:translateY(-1px)}
+.form-privacy{font-size:.7rem;color:var(--muted);line-height:1.5;margin-top:.9rem;text-align:center}
+.form-privacy a{color:var(--soft);text-decoration:underline}
+.btn-cv{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;width:100%;
+  font-size:.85rem;font-weight:500;margin-top:.7rem;
+  padding:.73rem 1.75rem;border-radius:6px;
+  border:1px solid var(--border2);color:var(--soft);
+  transition:border-color .2s,color .2s,background .2s;
+}
+.btn-cv:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-dim)}
+.btn-cv svg{width:15px;height:15px}
 
 /* ── FOOTER ── */
 #footer{
@@ -352,6 +520,8 @@ a{color:inherit;text-decoration:none}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
 .footer-brand{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--muted)}
 .footer-brand span{color:var(--purple)}
+.footer-note{font-size:.74rem;color:var(--muted);margin-top:.5rem;line-height:1.7;max-width:420px}
+.footer-note b{color:var(--green);font-weight:600}
 .footer-links{display:flex;gap:1.5rem}
 .footer-links a{font-size:.8rem;color:var(--muted);transition:color .2s}
 .footer-links a:hover{color:var(--white)}
@@ -364,27 +534,63 @@ a{color:inherit;text-decoration:none}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
-  .hero-inner{flex-direction:column;gap:3rem;align-items:flex-start}
-  .hero-aside{flex:none;width:100%}
-  .hero-stats{grid-template-columns:1fr 1fr 1fr 1fr;border-radius:10px}
-  .stat:nth-child(odd){border-right:1px solid var(--border)}
-  .stat:nth-child(3){border-right:1px solid var(--border)}
-  .stat:nth-child(1),.stat:nth-child(2),.stat:nth-child(3),.stat:nth-child(4){border-bottom:none}
+  #hero{padding:7rem 0 4rem}
+  .section{padding:4.5rem 0}
+  .hero-inner{grid-template-columns:1fr;gap:3rem;align-items:flex-start}
+  .hero-aside{width:100%;max-width:420px;margin-inline:auto}
+  .hero-photo img{height:clamp(360px,68vw,440px)}
+  .process-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:700px){
   .nav-links,.nav-cta{display:none}
   .ham{display:flex}
   .proj-grid,.pq-grid,.contact-wrap{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:1fr}
   .form-row{grid-template-columns:1fr}
   .hero-inner{gap:2.5rem}
-  .hero-stats{grid-template-columns:1fr 1fr}
-  .stat{padding:1.25rem}
-  .stat:nth-child(odd){border-right:1px solid var(--border)}
-  .stat:nth-child(3),.stat:nth-child(4){border-bottom:none}
-  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border)}
-  .hero-actions{flex-direction:column}
-  .hero-actions a{width:100%;justify-content:center}
-  .hero-h1{font-size:clamp(2.4rem,10vw,3.5rem)}
+  .hero-stats{row-gap:1.6rem}
+  .stat{flex:0 0 calc(50% - 1px);padding-right:0;margin-right:0;border-right:none}
+  .stat:nth-child(odd){border-right:1px solid var(--border);padding-right:clamp(1rem,4vw,1.5rem);margin-right:clamp(1rem,4vw,1.5rem)}
+  .stat-label{max-width:none}
+  .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+  .hero-actions a{width:auto;justify-content:center}
+  .btn-primary{grid-column:1 / -1}
+  .hero-h1{font-size:clamp(2rem,8vw,3rem)}
+  /* estadísticas en cuadrícula 2x2 limpia */
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem 1.25rem;margin-top:2.5rem;padding-top:2rem}
+  .stat{padding:0;margin:0;border:none!important}
+  .stat:nth-child(odd){padding-right:1.25rem;border-right:1px solid var(--border)!important}
+  .cta-banner{flex-direction:column;align-items:flex-start;padding:1.75rem}
+  .cta-banner .btn-wa{width:100%;justify-content:center}
+  .contact-wrap{gap:2.5rem}
+  .contact-form{padding:1.5rem}
+  .proj-card{padding:1.5rem}
+  .pq-card{padding:1.75rem 1.5rem}
+  /* evita que emails y nombres largos desborden */
+  .contact-item-val,.proj-name,.proj-desc{overflow-wrap:anywhere}
+}
+/* ── TELÉFONOS PEQUEÑOS ── */
+@media(max-width:480px){
+  .section .container,#footer .container{padding:0 clamp(1.25rem,6vw,2rem)}
+  #hero{padding:6rem 0 3rem}
+  .section{padding:3.75rem 0}
+  .hero-chip{margin-bottom:1.5rem}
+  .hero-actions a{padding-left:1rem;padding-right:1rem;font-size:.8rem}
+  .hero-h1{font-size:clamp(1.75rem,7.5vw,2.4rem);margin-bottom:1.1rem}
+  .hero-sub{margin-bottom:2.25rem;line-height:1.7}
+  .hero-stats{margin-top:2rem;padding-top:1.5rem;gap:1.2rem 1rem}
+  .stat-num{font-size:1.5rem}
+  .stat-label{font-size:.68rem}
+  .hero-photo img{height:clamp(300px,80vw,400px)}
+  .sec-sub{margin-bottom:2.25rem}
+  .proj-cat-label{margin-top:2.25rem}
+  .cta-banner{margin-top:2.5rem;padding:1.5rem}
+  .contact-form{padding:1.25rem}
+  .contact-item{padding:.8rem .9rem}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:1.25rem}
+  .footer-links{flex-wrap:wrap;gap:.85rem 1.5rem}
+  .nav-logo{font-size:.82rem}
+  .lang-toggle{padding:0 .55rem}
 }
 @media(prefers-reduced-motion:reduce){
   .fade,*{transition-duration:.01ms!important}
@@ -427,6 +633,15 @@ a{color:inherit;text-decoration:none}
   }
 }
 </script>
+
+<!-- Aplica el tema antes de pintar para evitar parpadeo -->
+<script>
+(function(){
+  var saved = localStorage.getItem('theme');
+  var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
 </head>
 <body>
 
@@ -437,12 +652,20 @@ a{color:inherit;text-decoration:none}
       <a href="#hero" class="nav-logo">cesar<span>_</span>dev</a>
       <ul class="nav-links">
         <li><a href="#porque">Servicios</a></li>
+        <li><a href="#proceso">Proceso</a></li>
         <li><a href="#proyectos">Proyectos</a></li>
         <li><a href="#stack">Stack</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
-      <a href="#contacto" class="nav-cta">Trabajemos juntos</a>
-      <button class="ham" aria-label="Menú"><span></span><span></span><span></span></button>
+      <div class="nav-right">
+        <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">EN</button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema" type="button">
+          <svg class="ico-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="ico-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <a href="#contacto" class="nav-cta">Trabajemos juntos</a>
+        <button class="ham" aria-label="Menú"><span></span><span></span><span></span></button>
+      </div>
     </div>
   </div>
 </nav>
@@ -450,6 +673,7 @@ a{color:inherit;text-decoration:none}
 <!-- MOBILE MENU -->
 <div id="mobile-menu">
   <a href="#porque"   onclick="closeMenu()">Servicios</a>
+  <a href="#proceso"  onclick="closeMenu()">Proceso</a>
   <a href="#proyectos" onclick="closeMenu()">Proyectos</a>
   <a href="#stack"    onclick="closeMenu()">Stack</a>
   <a href="#contacto" onclick="closeMenu()">Contacto</a>
@@ -481,9 +705,7 @@ a{color:inherit;text-decoration:none}
           </a>
           <a href="#proyectos" class="btn-secondary">Ver proyectos</a>
         </div>
-      </div>
-      <div class="hero-aside fade d4">
-        <div class="hero-stats">
+        <div class="hero-stats fade d4">
           <div class="stat">
             <div class="stat-num">8<span>+</span></div>
             <div class="stat-label">Proyectos entregados</div>
@@ -497,10 +719,19 @@ a{color:inherit;text-decoration:none}
             <div class="stat-label">Años de experiencia</div>
           </div>
           <div class="stat">
-            <div class="stat-num">∞</div>
+            <div class="stat-num">100<span>%</span></div>
             <div class="stat-label">Compromiso con el resultado</div>
           </div>
         </div>
+      </div>
+      <div class="hero-aside fade d2">
+        <figure class="hero-photo">
+          <img src="yoCv.jpeg" alt="Cesar Daniel Rodriguez, desarrollador web full stack freelance" width="380" height="460" loading="eager">
+          <figcaption class="hero-photo-tag">
+            <span class="dot"></span>
+            <span class="who"><strong>Cesar Daniel</strong>Full Stack Developer</span>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </div>
@@ -545,6 +776,37 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
+<!-- PROCESO -->
+<section id="proceso" class="section">
+  <div class="container">
+    <p class="sec-eyebrow fade">Cómo trabajo</p>
+    <h2 class="sec-title fade d1">Mi proceso, paso a paso</h2>
+    <p class="sec-sub fade d2">Trabajar conmigo es simple y transparente. Así avanzamos desde tu idea hasta el producto en producción.</p>
+    <div class="process-grid">
+      <div class="process-step fade d1">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Charla inicial</h3>
+        <p class="step-text">Conversamos sobre tu idea, tu negocio y el problema real que quieres resolver. Sin tecnicismos, sin compromiso.</p>
+      </div>
+      <div class="process-step fade d2">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Propuesta y presupuesto</h3>
+        <p class="step-text">Te entrego una propuesta técnica clara con alcance, tiempos y presupuesto cerrado. Sabes qué recibes y cuánto cuesta desde el inicio.</p>
+      </div>
+      <div class="process-step fade d3">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Desarrollo iterativo</h3>
+        <p class="step-text">Construyo en ciclos cortos con revisiones periódicas. Ves avances reales y das feedback en cada etapa, sin sorpresas al final.</p>
+      </div>
+      <div class="process-step fade d4">
+        <div class="step-num">04</div>
+        <h3 class="step-title">Lanzamiento y soporte</h3>
+        <p class="step-text">Publico tu producto en producción y te acompaño después de la entrega con soporte, ajustes y mantenimiento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PROYECTOS -->
 <section id="proyectos" class="section">
   <div class="container">
@@ -564,9 +826,17 @@ a{color:inherit;text-decoration:none}
         <div class="proj-stack">
           <span class="proj-tech">HTML</span><span class="proj-tech">CSS</span><span class="proj-tech">Responsive</span><span class="proj-tech">SEO local</span>
         </div>
+        <div class="proj-result">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Resultado:</strong> dominio propio y SEO local activo — el restaurante aparece en búsquedas de Google con reseñas integradas.</span>
+        </div>
         <a href="https://restaurant.fonda-el-limoncito.site/" target="_blank" rel="noopener" class="proj-link">
           Visitar sitio
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20quiero%20una%20p%C3%A1gina%20web%20como%20la%20de%20Fonda%20El%20Limoncito." target="_blank" rel="noopener" class="proj-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ¿Quieres una web así para tu negocio? Hablemos.
         </a>
       </div>
       <div class="proj-card">
@@ -579,9 +849,17 @@ a{color:inherit;text-decoration:none}
         <div class="proj-stack">
           <span class="proj-tech">Next.js</span><span class="proj-tech">App Router</span><span class="proj-tech">PostgreSQL</span><span class="proj-tech">Auth</span>
         </div>
+        <div class="proj-result">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Resultado:</strong> dominio real con tráfico activo y usuarios registrados leyendo a diario.</span>
+        </div>
         <a href="https://manhwaimperial.site" target="_blank" rel="noopener" class="proj-link">
           Visitar sitio
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20quiero%20una%20plataforma%20web%20full%20stack%20similar." target="_blank" rel="noopener" class="proj-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ¿Quieres una plataforma similar? Hablemos.
         </a>
       </div>
     </div>
@@ -597,6 +875,14 @@ a{color:inherit;text-decoration:none}
         <div class="proj-stack">
           <span class="proj-tech">Flutter</span><span class="proj-tech">Dart</span><span class="proj-tech">PDF Gen</span><span class="proj-tech">WhatsApp API</span>
         </div>
+        <div class="proj-result">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Resultado:</strong> factura PDF generada y enviada al cliente por WhatsApp en un solo toque.</span>
+        </div>
+        <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20necesito%20una%20app%20m%C3%B3vil%20para%20mi%20equipo%20de%20ventas." target="_blank" rel="noopener" class="proj-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ¿Necesitas una app para tu equipo? Hablemos.
+        </a>
       </div>
       <div class="proj-card">
         <div class="proj-card-top">
@@ -607,9 +893,17 @@ a{color:inherit;text-decoration:none}
         <div class="proj-stack">
           <span class="proj-tech">Next.js</span><span class="proj-tech">PostgreSQL</span><span class="proj-tech">Roles</span><span class="proj-tech">Analytics</span>
         </div>
+        <div class="proj-result">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Resultado:</strong> control de ventas en tiempo real para todo el equipo de campo desde un solo panel.</span>
+        </div>
         <a href="https://desarrollo-software.site/" target="_blank" rel="noopener" class="proj-link">
           Visitar sitio
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20necesito%20un%20panel%20de%20administraci%C3%B3n%20como%20este." target="_blank" rel="noopener" class="proj-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ¿Quieres un panel como este? Hablemos.
         </a>
       </div>
     </div>
@@ -625,6 +919,14 @@ a{color:inherit;text-decoration:none}
         <div class="proj-stack">
           <span class="proj-tech">Flutter</span><span class="proj-tech">Dart</span><span class="proj-tech">QR Scanner</span><span class="proj-tech">Offline first</span>
         </div>
+        <div class="proj-result">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Resultado:</strong> contratada y desplegada por una institución académica real para uso del público.</span>
+        </div>
+        <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20necesito%20una%20app%20institucional%20o%20educativa." target="_blank" rel="noopener" class="proj-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ¿Necesitas una app institucional? Hablemos.
+        </a>
       </div>
     </div>
 
@@ -635,12 +937,28 @@ a{color:inherit;text-decoration:none}
         <h3 class="proj-name">Modelo IA — One Card</h3>
         <p class="proj-desc">Modelo de inteligencia artificial entrenado para One Card, empresa de previsión social y control de gasto empresarial. El modelo realiza matching y validación de transferencias y compras en tarjetas de despensa, combustible y premios — reduciendo fraudes y automatizando la comprobación de gastos.</p>
         <div class="proj-stack"><span class="proj-tech">Python</span><span class="proj-tech">Fuzzy Logic</span><span class="proj-tech">ML</span><span class="proj-tech">Google Colab</span></div>
+        <div class="proj-result">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Resultado:</strong> reduce fraudes automatizando la validación de transferencias y compras a escala.</span>
+        </div>
+        <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20quiero%20automatizar%20un%20proceso%20con%20IA." target="_blank" rel="noopener" class="proj-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ¿Quieres automatizar con IA? Hablemos.
+        </a>
       </div>
       <div class="proj-card">
         <p class="proj-tag">Compiladores · Teoría</p>
         <h3 class="proj-name">PseudoC — Parser recursivo</h3>
         <p class="proj-desc">Parser de descenso recursivo para un subconjunto de C en Java. Análisis léxico, sintáctico y gramáticas formales implementados desde cero.</p>
         <div class="proj-stack"><span class="proj-tech">Java</span><span class="proj-tech">Recursive Descent</span><span class="proj-tech">Gramáticas</span></div>
+        <div class="proj-result">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Resultado:</strong> analizador funcional construido desde cero — léxico, sintáctico y gramáticas formales.</span>
+        </div>
+        <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20tengo%20un%20reto%20t%C3%A9cnico%20complejo%20que%20resolver." target="_blank" rel="noopener" class="proj-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ¿Tienes un reto técnico complejo? Hablemos.
+        </a>
       </div>
     </div>
     <div class="proj-grid col1 fade d5" style="margin-top:1px">
@@ -649,7 +967,26 @@ a{color:inherit;text-decoration:none}
         <h3 class="proj-name">Galería API — REST en DigitalOcean</h3>
         <p class="proj-desc">API REST en PHP desplegada en un servidor Linux en DigitalOcean. Gestión de recursos multimedia con endpoints documentados y configuración de entorno de producción.</p>
         <div class="proj-stack"><span class="proj-tech">PHP</span><span class="proj-tech">REST API</span><span class="proj-tech">DigitalOcean</span><span class="proj-tech">Linux</span></div>
+        <div class="proj-result">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Resultado:</strong> API en producción sobre VPS Linux con endpoints documentados y entorno configurado.</span>
+        </div>
+        <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20necesito%20una%20API%20o%20backend%20en%20producci%C3%B3n." target="_blank" rel="noopener" class="proj-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          ¿Necesitas una API o backend? Hablemos.
+        </a>
       </div>
+    </div>
+
+    <div class="cta-banner fade">
+      <div class="cta-banner-text">
+        <h3>¿Tu proyecto podría ser el siguiente?</h3>
+        <p>Cuéntame qué necesitas construir. Te respondo en menos de 24 horas con una propuesta concreta.</p>
+      </div>
+      <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20vi%20tu%20portafolio%20y%20me%20interesa%20trabajar%20contigo" target="_blank" rel="noopener" class="btn-wa">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Escríbeme por WhatsApp
+      </a>
     </div>
   </div>
 </section>
@@ -744,10 +1081,23 @@ a{color:inherit;text-decoration:none}
               <span class="contact-item-val">cesar886.github.io</span>
             </div>
           </a>
+          <div class="contact-item">
+            <div class="contact-item-ico">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <span class="contact-item-label">Horario de atención</span>
+              <span class="contact-item-val">Lun–Vie · 9:00–18:00 (GMT-6, México)</span>
+            </div>
+          </div>
         </div>
         <a href="https://wa.me/528261308623?text=Hola%20Cesar%2C%20me%20interesa%20trabajar%20contigo" target="_blank" rel="noopener" class="btn-wa" style="display:inline-flex;width:100%;justify-content:center">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Escribir por WhatsApp
+        </a>
+        <a href="cv-cesar-rodriguez.pdf" download class="btn-cv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Descargar CV (PDF)
         </a>
       </div>
       <div class="contact-form fade d2">
@@ -773,9 +1123,24 @@ a{color:inherit;text-decoration:none}
             <textarea id="mensaje" placeholder="Cuéntame sobre tu proyecto..." required></textarea>
           </div>
           <button type="submit" class="btn-submit" id="submitBtn">Enviar mensaje</button>
+          <p class="form-privacy">Al enviar este formulario aceptas que use tus datos únicamente para responder a tu consulta. No comparto tu información con terceros. <a href="#privacidad">Aviso de privacidad</a>.</p>
         </form>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- AVISO DE PRIVACIDAD -->
+<section id="privacidad" class="section" style="padding-top:0">
+  <div class="container">
+    <p class="sec-eyebrow fade">Legal</p>
+    <h2 class="sec-title fade" style="font-size:clamp(1.2rem,2.5vw,1.6rem)">Aviso de privacidad</h2>
+    <p class="sec-sub fade" style="max-width:760px;margin-bottom:0">
+      Los datos que envías a través del formulario de contacto (nombre, email, asunto y mensaje) se utilizan
+      exclusivamente para responder a tu consulta y elaborar una propuesta. No se almacenan en bases de datos
+      automatizadas, no se usan con fines publicitarios y no se comparten con terceros. Si deseas que elimine
+      cualquier información que me hayas enviado, escríbeme a <a href="mailto:cesar4herrera@gmail.com" style="color:var(--purple)">cesar4herrera@gmail.com</a> y lo haré sin demora.
+    </p>
   </div>
 </section>
 
@@ -783,7 +1148,10 @@ a{color:inherit;text-decoration:none}
 <footer id="footer">
   <div class="container">
     <div class="footer-inner">
-      <p class="footer-brand">cesar<span>_</span>dev · 2026</p>
+      <div>
+        <p class="footer-brand">cesar<span>_</span>dev · © 2026</p>
+        <p class="footer-note"><b>Disponible para proyectos freelance y colaboraciones.</b> Trabajo con contrato y emito factura cuando se requiere.</p>
+      </div>
       <div class="footer-links">
         <a href="mailto:cesar4herrera@gmail.com">Email</a>
         <a href="tel:+528261308623">Teléfono</a>
@@ -795,6 +1163,15 @@ a{color:inherit;text-decoration:none}
 </footer>
 
 <script>
+/* Theme toggle */
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+});
+
 /* Nav scroll */
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
@@ -831,10 +1208,141 @@ function handleSubmit(e) {
   const text = `Hola Cesar, te escribo desde tu portafolio.\n\n*Nombre:* ${nombre}\n*Email:* ${email}\n*Asunto:* ${asunto}\n\n${mensaje}`;
   window.open(`https://wa.me/528261308623?text=${encodeURIComponent(text)}`, '_blank');
   const btn = document.getElementById('submitBtn');
-  btn.textContent = '¡Mensaje enviado!';
+  btn.textContent = CURRENT_LANG === 'en' ? 'Message sent!' : '¡Mensaje enviado!';
   btn.style.background = '#34d399';
-  setTimeout(() => { btn.textContent = 'Enviar mensaje'; btn.style.background = ''; document.getElementById('contactForm').reset(); }, 3000);
+  setTimeout(() => { btn.textContent = CURRENT_LANG === 'en' ? 'Send message' : 'Enviar mensaje'; btn.style.background = ''; document.getElementById('contactForm').reset(); }, 3000);
 }
+
+/* ───────── Traducción ES / EN ───────── */
+const qa = s => Array.from(document.querySelectorAll(s));
+function getNodeText(el){
+  for(const n of el.childNodes){ if(n.nodeType===3 && n.textContent.trim()) return n.textContent.trim(); }
+  return el.textContent.trim();
+}
+function setNodeText(el,str){
+  let done=false;
+  el.childNodes.forEach(n=>{ if(n.nodeType===3 && n.textContent.trim() && !done){ n.textContent=' '+str+' '; done=true; }});
+  if(!done) el.insertBefore(document.createTextNode(' '+str+' '), null);
+}
+
+const RULES = [
+  {sel:'.nav-links a', t:'text', en:['Services','Process','Projects','Stack','Contact']},
+  {sel:'.nav-cta', t:'text', en:["Let's work together"]},
+  {sel:'#mobile-menu a', t:'text', en:['Services','Process','Projects','Stack','Contact',"Let's work together"]},
+  {sel:'.hero-chip', t:'text', en:['Available for projects']},
+  {sel:'.hero-h1', t:'html', en:['I turn ideas into<br>\n      <span class="accent">software that works</span>']},
+  {sel:'.hero-sub', t:'html', en:["I'm <strong>Cesar Daniel Rodriguez</strong>, a Software Engineer specialized in <strong>professional websites</strong>, mobile apps and admin dashboards. I deliver real products — with their own domain, real users and active traffic."]},
+  {sel:'.hero-actions a', t:'node', en:["Let's talk about your project","WhatsApp me directly","View projects"]},
+  {sel:'.stat-label', t:'text', en:['Projects delivered','Platforms in production','Years of experience','Commitment to results']},
+  {sel:'.sec-eyebrow', t:'text', en:['Why hire me','How I work','Web development portfolio','Technology','Contact','Legal']},
+  {sel:'.sec-title', t:'text', en:['A web developer who delivers real results','My process, step by step','Websites & featured projects','Technical stack for professional web development','Privacy notice']},
+  {sel:'.sec-sub', t:'html', en:[
+    "I don't just write code — I deliver websites and solutions that run in production, that users actually use and that businesses need.",
+    "Working with me is simple and transparent. This is how we go from your idea to a product in production.",
+    "Every project solves a real business problem. Websites in production, mobile apps and full stack platforms.",
+    'The data you send through the contact form (name, email, subject and message) is used solely to reply to your enquiry and prepare a proposal. It is not stored in automated databases, not used for advertising and never shared with third parties. If you want me to delete any information you have sent, email me at <a href="mailto:cesar4herrera@gmail.com" style="color:var(--purple)">cesar4herrera@gmail.com</a> and I will do so promptly.'
+  ]},
+  {sel:'.pq-title', t:'text', en:['Real projects in production','True full stack — web & mobile','Business-focused','Straightforward delivery']},
+  {sel:'.pq-text', t:'text', en:[
+    'ManhwaImperial.site and restaurant.fonda-el-limoncito.site have their own domain, real users and active traffic — they are not portfolio demos. I know what it takes to launch and maintain a product.',
+    'I handle the full stack: from the database and API to the web interface in Next.js and the mobile app in Flutter. One single developer, less friction, lower costs.',
+    "ColportorUm automated the sales cycle for field colporteurs. I don't design pretty features — I solve the real problem. The client is always the core of every technical decision.",
+    'I communicate progress, meet deadlines and tell the truth about timelines from the start. No empty promises, no disappearing. If I commit, I deliver.'
+  ]},
+  {sel:'.step-title', t:'text', en:['Initial chat','Proposal & quote','Iterative development','Launch & support']},
+  {sel:'.step-text', t:'text', en:[
+    'We talk about your idea, your business and the real problem you want to solve. No jargon, no commitment.',
+    'I give you a clear technical proposal with scope, timeline and a closed quote. You know what you get and what it costs from the start.',
+    'I build in short cycles with regular reviews. You see real progress and give feedback at every stage, with no surprises at the end.',
+    'I publish your product in production and stay with you after delivery with support, tweaks and maintenance.'
+  ]},
+  {sel:'.proj-cat-label', t:'text', en:['Web Platforms — Live in production','ColportorUm Ecosystem — App + Dashboard','Mobile Apps — Flutter','Academic / Experimental Projects']},
+  {sel:'.proj-tag', t:'text', en:['Restaurant · Commercial web','Entertainment · Full Stack','Productivity · Sales · Mobile','Backoffice · Analytics','Institutional · Education','AI · Fintech · Validation','Compilers · Theory','Backend · Cloud']},
+  {sel:'.proj-name', t:'text', en:['Fonda El Limoncito','ManhwaImperial.site','ColportorUm — Mobile App','ColportorUm Admin Dashboard','Montemorelos University Museum App','AI Model — One Card','PseudoC — Recursive parser','Gallery API — REST on DigitalOcean']},
+  {sel:'.proj-desc', t:'text', en:[
+    'Website for a family restaurant in Barrio Antiguo, Monterrey. It showcases history, menu, atmosphere, opening hours, Google and TripAdvisor reviews, direct contact and calls to action to visit or call the restaurant.',
+    'Manhwa/Webtoon reading platform with a real domain and active traffic. Semantic search engine, dynamic chapter system, per-user reading sync and a content admin panel.',
+    'Automates the full sales cycle for field colporteurs: order capture, real-time PDF invoice generation and direct delivery to the customer via WhatsApp with a single tap.',
+    'Web control panel with real-time sales visualization, user management, billing metrics, inventory control and a role system with differentiated permissions.',
+    'Official interactive guide for the university museum. Digital tour through halls with piece descriptions, QR code scanning and interactive maps. Project commissioned by a real academic institution.',
+    'Artificial intelligence model trained for One Card, a social welfare and corporate spend control company. It matches and validates transfers and purchases on grocery, fuel and reward cards — reducing fraud and automating expense verification.',
+    'Recursive descent parser for a subset of C in Java. Lexical and syntactic analysis and formal grammars implemented from scratch.',
+    'REST API in PHP deployed on a Linux server on DigitalOcean. Multimedia resource management with documented endpoints and a configured production environment.'
+  ]},
+  {sel:'.proj-result span', t:'html', en:[
+    '<strong>Result:</strong> own domain and active local SEO — the restaurant shows up in Google searches with integrated reviews.',
+    '<strong>Result:</strong> real domain with active traffic and registered users reading every day.',
+    '<strong>Result:</strong> PDF invoice generated and sent to the customer via WhatsApp in a single tap.',
+    '<strong>Result:</strong> real-time sales control for the whole field team from a single panel.',
+    '<strong>Result:</strong> commissioned and deployed by a real academic institution for public use.',
+    '<strong>Result:</strong> reduces fraud by automating the validation of transfers and purchases at scale.',
+    '<strong>Result:</strong> a working analyzer built from scratch — lexical, syntactic and formal grammars.',
+    '<strong>Result:</strong> API in production on a Linux VPS with documented endpoints and a configured environment.'
+  ]},
+  {sel:'.proj-link', t:'node', en:['Visit site','Visit site','Visit site']},
+  {sel:'.proj-cta', t:'node', en:[
+    "Want a website like this for your business? Let's talk.",
+    "Want a similar platform? Let's talk.",
+    "Need an app for your team? Let's talk.",
+    "Want a dashboard like this? Let's talk.",
+    "Need an institutional app? Let's talk.",
+    "Want to automate with AI? Let's talk.",
+    "Got a complex technical challenge? Let's talk.",
+    "Need an API or backend? Let's talk."
+  ]},
+  {sel:'.cta-banner-text h3', t:'text', en:['Could your project be next?']},
+  {sel:'.cta-banner-text p', t:'text', en:['Tell me what you need to build. I reply within 24 hours with a concrete proposal.']},
+  {sel:'.cta-banner .btn-wa', t:'node', en:['Message me on WhatsApp']},
+  {sel:'.stack-group-label', t:'text', en:['Frontend & Mobile','Backend & Databases','Infrastructure & Tools','Data Science & Theory']},
+  {sel:'.contact-tagline', t:'html', en:["Got a project?<br>Let's talk <span>now.</span>"]},
+  {sel:'.contact-pitch', t:'text', en:["I'm available for new freelance projects and collaborations. Tell me what you need to build and I'll reply within 24 hours with a concrete proposal."]},
+  {sel:'.contact-item-label', t:'text', en:['Email','Phone','Portfolio / GitHub','Office hours']},
+  {sel:'.contact-item-val', t:'text', en:['cesar4herrera@gmail.com','826 130 8623','cesar886.github.io','Mon–Fri · 9:00–18:00 (GMT-6, Mexico)']},
+  {sel:'.contact-info .btn-wa', t:'node', en:['Message me on WhatsApp']},
+  {sel:'.btn-cv', t:'node', en:['Download CV (PDF)']},
+  {sel:'.form-title', t:'text', en:['Send me a message']},
+  {sel:'.form-sub', t:'text', en:['I reply within 24 hours.']},
+  {sel:'.form-group label', t:'text', en:['Name','Email','Subject','Message']},
+  {sel:'#submitBtn', t:'text', en:['Send message']},
+  {sel:'.form-privacy', t:'html', en:['By submitting this form you agree that I use your data solely to reply to your enquiry. I do not share your information with third parties. <a href="#privacidad">Privacy notice</a>.']},
+  {sel:'.footer-note', t:'html', en:['<b>Available for freelance projects and collaborations.</b> I work with a contract and issue an invoice when required.']},
+  {sel:'.footer-links a', t:'text', en:['Email','Phone','GitHub','WhatsApp']}
+];
+const PH = [['#nombre','Your name'],['#asunto','How can I help?'],['#mensaje','Tell me about your project...']];
+
+let CURRENT_LANG = 'es';
+const ES_TITLE = document.title;
+const EN_TITLE = 'Cesar Daniel Rodriguez — Full Stack Web Developer | Freelance';
+let esCache = null, esPh = null;
+
+function captureES(){
+  esCache = RULES.map(r => qa(r.sel).map(el => r.t==='html' ? el.innerHTML : (r.t==='node' ? getNodeText(el) : el.textContent)));
+  esPh = PH.map(([sel]) => { const el=document.querySelector(sel); return el ? el.placeholder : ''; });
+}
+function applyLang(lang){
+  RULES.forEach((r,ri)=>{
+    qa(r.sel).forEach((el,i)=>{
+      const val = lang==='en' ? r.en[i] : (esCache[ri] && esCache[ri][i]);
+      if(val==null) return;
+      if(r.t==='html') el.innerHTML = val;
+      else if(r.t==='node') setNodeText(el, val);
+      else el.textContent = val;
+    });
+  });
+  PH.forEach(([sel,enVal],i)=>{ const el=document.querySelector(sel); if(el) el.placeholder = lang==='en' ? enVal : esPh[i]; });
+  CURRENT_LANG = lang;
+  document.documentElement.lang = lang;
+  document.title = lang==='en' ? EN_TITLE : ES_TITLE;
+  document.getElementById('langToggle').textContent = lang==='en' ? 'ES' : 'EN';
+  localStorage.setItem('lang', lang);
+}
+
+captureES();
+(function(){
+  const saved = localStorage.getItem('lang');
+  if(saved === 'en') applyLang('en');
+})();
+document.getElementById('langToggle').addEventListener('click', ()=> applyLang(CURRENT_LANG==='en' ? 'es' : 'en'));
 </script>
 </body>
 </html>
